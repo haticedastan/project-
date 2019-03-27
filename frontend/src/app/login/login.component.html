@@ -69,14 +69,14 @@ span.psw {
 
 <h2>Login Form</h2>
 
-<form action="/action_page.php">
+<form [formGroup]="loginForm" action="/action_page.php">
  
   <div class="container">
     <label for="email"><b>email</b></label>
-    <input type="email" placeholder="Enter email" name="uname" required>
+    <input formControlName="email"type="email" placeholder="Enter email" name="uname" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input formControlName="password" type="password" placeholder="Enter Password" name="psw" required>
         
     <div class="form-group" style="text-align:center;">
       <button type="button" class="btn btn-dark" (click)="login()">Log in</button>
