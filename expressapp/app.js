@@ -6,8 +6,17 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var cors=require('cors');
 var app = express();
+
+app.use(cors({
+  origin:['http://localhost:4200','http://127.0.0.1:4200'],
+  credentials:true
+}));
+
+var mongoose =require('mongoose');
+
+mongoose.connect('mongodb://localhost/youtube');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
