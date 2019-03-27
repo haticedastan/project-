@@ -16,8 +16,26 @@ app.use(cors({
 
 var mongoose =require('mongoose');
 
-mongoose.connect('mongodb://localhost/youtube');
+mongoose.connect('mongodb://localhost/database');
+// passport
+var passport = require ('passport');
+var session = require('express-session');
 
+app.use(session({
+  name:'myname.hatice',
+  resave:false,
+  saveUninitialized:false,
+  secret:'secret',
+  cookie:{
+    maxAge:36000000,
+    httpOnly:false,
+    secure:false
+  }
+}))
+require('./passport-config');
+
+app.use(passport.initialize());
+app.use(passport.session());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
