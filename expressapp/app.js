@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var cors=require('cors');
+var cors= require('cors');
 var app = express();
 
 app.use(cors({
@@ -16,13 +16,14 @@ app.use(cors({
 
 var mongoose =require('mongoose');
 
-mongoose.connect('mongodb://localhost/database');
-// passport
-var passport = require ('passport');
-var session = require('express-session');
+mongoose.connect('mongodb://localhost/youtube');
 
+//passport
+var passport = require('passport');
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 app.use(session({
-  name:'myname.hatice',
+  name:'myname.sid',
   resave:false,
   saveUninitialized:false,
   secret:'secret',
@@ -30,12 +31,14 @@ app.use(session({
     maxAge:36000000,
     httpOnly:false,
     secure:false
-  }
-}))
+  },
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
 require('./passport-config');
-
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
