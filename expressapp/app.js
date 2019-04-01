@@ -3,11 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var cors= require('cors');
 var app = express();
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+//nodemailer
+var  bodyParser= require('body-parser');
+
+io.on('connection', function(socket){
+  console.log('a connection is alive');
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
 
 app.use(cors({
   origin:['http://localhost:4200','http://127.0.0.1:4200'],
@@ -16,7 +27,7 @@ app.use(cors({
 
 var mongoose =require('mongoose');
 
-mongoose.connect('mongodb://localhost/database');
+mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true});
 
 //passport
 var passport = require('passport');
@@ -67,5 +78,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 module.exports = app;
